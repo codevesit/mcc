@@ -1,0 +1,332 @@
+xml file :
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.saahilhiranandani.myquiz3.MainActivity">
+
+    <Button
+
+        android:id="@+id/answer1"
+
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+
+        android:layout_centerHorizontal="true"
+
+        android:layout_marginBottom="27dp"
+
+        android:text="Button" />
+
+    <Button
+
+        android:id="@+id/answer2"
+
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+
+        android:layout_above="@+id/answer1"
+
+        android:layout_marginBottom="15dp"
+
+        android:text="Button" />
+
+    <Button
+
+        android:id="@+id/answer3"
+
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+
+        android:layout_above="@+id/answer2"
+
+        android:layout_marginBottom="11dp"
+
+        android:text="Button" />
+
+    <Button
+
+        android:id="@+id/answer4"
+
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+
+        android:layout_above="@+id/answer3"
+
+        android:layout_marginBottom="15dp"
+
+        android:text="Button" />
+
+    <TextView
+
+        android:id="@+id/score"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentTop="true"
+
+        android:layout_alignParentLeft="true"
+
+        android:layout_centerHorizontal="true"
+
+        android:gravity="center"
+
+        android:textSize="24dp"
+
+        android:text="TextView" />
+
+    <TextView
+
+        android:id="@+id/question"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+        android:layout_above="@+id/answer4"
+
+        android:layout_below="@+id/score"
+
+        android:layout_alignParentLeft="true"
+
+        android:layout_centerHorizontal="true"
+
+        android:gravity="center"
+
+        android:textSize="24dp"
+
+        android:text="TextView" />
+
+</RelativeLayout>
+
+Activity file :
+
+
+import android.content.DialogInterface;
+
+import android.content.Intent;
+
+import android.support.v7.app.AlertDialog;
+
+import android.support.v7.app.AppCompatActivity; import android.os.Bundle; import android.view.View;
+
+import android.widget.Button;
+
+import android.widget.TextView;
+
+import java.util.Random;
+
+public class MainActivity extends AppCompatActivity { Button answer1, answer2, answer3, answer4; TextView score, question;
+
+    private Questions mQuestions = new Questions();
+
+    private String mAnswer;
+
+    private int mScore = 0;
+
+    private int mQuestionsLength = mQuestions.mQuestions.length;
+
+    Random r;
+
+    @Override
+
+    protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); setContentView(R.layout.activity_main); r = new Random();
+
+        answer1 = (Button) findViewById(R.id.answer1); answer2 = (Button) findViewById(R.id.answer2); answer3 = (Button) findViewById(R.id.answer3); answer4 = (Button) findViewById(R.id.answer4); score = (TextView) findViewById(R.id.score); question = (TextView) findViewById(R.id.question); score.setText("Score:" + mScore); updateQuestion(r.nextInt(mQuestionsLength)); answer1.setOnClickListener(new View.OnClickListener() { @Override
+
+        public void onClick(View view) {
+
+            if (answer1.getText() == mAnswer){
+
+                mScore++;
+
+                score.setText("Score:" + mScore);
+
+                updateQuestion(r.nextInt(mQuestionsLength));
+
+            }else{
+
+                gameOver(); }}});
+
+        answer2.setOnClickListener(new View.OnClickListener() { @Override
+
+        public void onClick(View view) {
+
+            if (answer2.getText() == mAnswer){
+
+                mScore++;
+
+                score.setText("Score:" + mScore);
+
+                updateQuestion(r.nextInt(mQuestionsLength));
+
+            }else{
+
+                gameOver();}
+
+        }});
+
+        answer3.setOnClickListener(new View.OnClickListener() { @Override
+
+        public void onClick(View view) {
+
+            if (answer3.getText() == mAnswer){
+
+                mScore++;
+
+                score.setText("Score:" + mScore);
+
+                updateQuestion(r.nextInt(mQuestionsLength));
+
+            }else{
+
+                gameOver();}
+
+        }});
+
+        answer4.setOnClickListener(new View.OnClickListener() { @Override
+
+        public void onClick(View view) {
+
+            if (answer4.getText() == mAnswer){
+
+                mScore++;
+
+                score.setText("Score:" + mScore);
+
+                updateQuestion(r.nextInt(mQuestionsLength));
+
+            }else{
+
+                gameOver();
+
+            }}});}
+
+    private void updateQuestion(int num){ question.setText(mQuestions.getQuestion(num)); answer1.setText(mQuestions.getChoice1(num)); answer2.setText(mQuestions.getChoice2(num)); answer3.setText(mQuestions.getChoice3(num)); answer4.setText(mQuestions.getChoice4(num)); mAnswer = mQuestions.getCorrectAnswer(num); } private void gameOver(){
+
+        AlertDialog.Builder alertDialogueBuilder = new AlertDialog.Builder(MainActivity.this); alertDialogueBuilder
+
+                .setMessage("GAME OVER! Your Score is" + mScore + "points")
+
+                .setCancelable(false)
+
+                .setPositiveButton("NEW GAME",
+
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+
+                                finish();}})
+
+                .setNegativeButton("EXIT",
+
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+
+                            public void onClick(DialogInterface dialogInterface, int i) { }});
+
+        AlertDialog alertDialog = alertDialogueBuilder.create(); alertDialog.show();}}
+
+
+
+
+Questions :
+
+public class Questions {
+
+    public String mQuestions[] = {
+
+            "Which is the first planet in Solar System?",
+
+            "Which is the Second planet in Solar System?",
+
+            "The new operator ",
+
+            "Which of the following is not a keyword in java?",
+
+            "	Can we have two public classes in one java file?",
+
+            "	What is JIT compiler?",
+
+            "	Method Overloading is an example of",
+
+            "What happens when thread's sleep() method is called?",
+
+            "	- Is it necessary that each try block must be followed by a finally block?"
+
+    };
+
+    private String mChoice[][] = { {"Mercury", "Venus", "Saturn", "Mars"}, {"Jupitor", "Venus", "Earth", "Neptune"},
+
+            {"Tells how much memory is is availabe"," Obtains memory for new variable","Creates a variable called new"," Returns a pointer to a new variable"},
+            {" static"," Boolean","void"," private"}, {"True","False","May Be","Not Sure"},
+            {"JIT improves the runtime performance of computer programs based on bytecode.", "	JIT is an application development framework.",
+
+        "	JIT is an implementation of the Java Virtual Machine which executes Java programs."," None of the above."},
+        {" Static Binding."," Dynamic Binding."," Both of the above."," None of the above."}, {"Thread returns to the ready state.",
+        "	Thread returns to the waiting state.",
+
+        "Thread starts running."," None of the above.",},
+
+        {"True","False","May Be","Not Sure"}};
+
+private String mCorrectAnswers[] = {"Mercury","Venus","Tells how much memory is is availabe"," static","True","JIT improves the runtime performance of computer programs based on bytecode."," Static Binding.","Thread returns to the ready state.","True"  }; public String getQuestion(int a){ String question = mQuestions[a];
+
+        return question;}
+
+public String getChoice1(int a){
+
+        String choice = mChoice[a][0];
+
+        return choice;}
+
+public String getChoice2(int a){
+
+        String choice = mChoice[a][1];
+
+        return choice;}
+
+public String getChoice3(int a){
+
+        String choice = mChoice[a][2];
+
+        return choice;}
+
+public String getChoice4(int a){
+
+        String choice = mChoice[a][3];
+
+        return choice;}
+
+public String getCorrectAnswer(int a){
+
+        String answer = mCorrectAnswers[a];
+
+        return answer;}
+
+        }
+
+
+
+
+

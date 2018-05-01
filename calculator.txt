@@ -1,0 +1,208 @@
+XML FILE:
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   tools:context="com.example.harshatolani.calci.MainActivity">
+
+   <TextView
+       android:id="@+id/txt1"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="First Operand :"
+       android:textAppearance="?android:textAppearanceMedium"
+       android:layout_margin="20dp"
+       android:paddingTop="8dp"
+       />
+
+   <TextView
+       android:id="@+id/txt2"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:text="Second Operand :"
+       android:textAppearance="?android:textAppearanceMedium"
+       android:layout_margin="20dp"
+       android:layout_below="@id/txt1"
+       />
+
+ <EditText
+   android:id="@+id/txt3"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:layout_alignBaseline="@+id/txt1"
+   android:layout_alignBottom="@+id/txt1"
+   android:layout_alignStart="@+id/txt6"
+   android:ems="10"
+   android:inputType="textPersonName"
+   android:hint="enter 1st operand" />
+
+<EditText
+   android:id="@+id/txt4"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:layout_alignBaseline="@+id/txt2"
+   android:layout_alignBottom="@+id/txt2"
+   android:layout_toEndOf="@+id/txt1"
+   android:ems="10"
+   android:inputType="textPersonName"
+   android:hint="enter 2nd operand"
+/>
+
+   <Button
+       android:id="@+id/bt1"
+       android:layout_width="100dp"
+       android:layout_height="45dp"
+       android:layout_below="@id/txt2"
+       android:layout_alignEnd="@id/txt1"
+       android:text="ADD"
+       android:layout_marginTop="30dp" />
+
+   <Button
+       android:id="@+id/bt2"
+       android:layout_width="100dp"
+       android:layout_height="45dp"
+       android:text="SUBTRACT"
+       android:layout_alignBaseline="@id/bt1"
+       android:layout_alignBottom="@id/bt1"
+       android:layout_alignEnd="@+id/txt4"
+       android:layout_marginEnd="30dp" />
+
+   <Button
+       android:id="@+id/bt3"
+       android:layout_width="100dp"
+       android:layout_height="45dp"
+       android:layout_below="@id/txt2"
+       android:layout_alignEnd="@id/bt1"
+       android:text="MULTIPLY"
+       android:layout_marginTop="150dp" />
+
+   <Button
+       android:id="@+id/bt4"
+       android:layout_width="100dp"
+       android:layout_height="45dp"
+       android:text="DIVIDE"
+       android:layout_alignStart="@id/bt2"
+       android:layout_above="@+id/txt5" />
+<TextView
+   android:id="@+id/txt5"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+   android:layout_alignEnd="@+id/bt3"
+   android:layout_alignParentLeft="true"
+   android:layout_alignRight="@+id/bt3"
+   android:layout_below="@+id/bt3"
+   android:layout_marginTop="46dp"
+   android:paddingLeft="10dp"
+   android:paddingTop="10dp"
+   android:text="RESULT :"
+   android:textAppearance="?android:textAppearanceLarge" />
+
+<TextView
+   android:id="@+id/txt6"
+   android:layout_width="200dp"
+   android:layout_height="wrap_content"
+   android:textAppearance="?android:textAppearanceMedium"
+   android:paddingLeft="50dp"
+   android:paddingTop="50dp"
+   android:layout_marginLeft="20dp"
+   android:layout_marginRight="20dp"
+   android:layout_alignBaseline="@id/txt5"
+   android:layout_toEndOf="@id/txt5"
+   android:layout_marginStart="5dp"
+   />
+</RelativeLayout>
+
+
+MAIN ACTIVITY FILE:
+package com.example.harshatolani.calci;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+   EditText etNumber1,etNumber2;
+   Button btnAdd,btnSubtract,btnDivide,btnMultiply;
+   TextView txt6;
+   String oper = "";
+
+   boolean Add, Subtract, Multiply, Divide;
+
+   @Override
+   protected void onCreate(Bundle savedInstanceState) {
+       super.onCreate(savedInstanceState);
+       setContentView(R.layout.activity_main);
+
+       etNumber1=(EditText)findViewById(R.id.txt3);
+       etNumber2=(EditText)findViewById(R.id.txt4);
+       btnAdd=(Button)findViewById(R.id.bt1);
+       btnSubtract=(Button)findViewById(R.id.bt2);
+       btnDivide=(Button)findViewById(R.id.bt4);
+       btnMultiply=(Button)findViewById(R.id.bt3);
+       txt6=(TextView)findViewById(R.id.txt6);
+
+       btnAdd.setOnClickListener(this);
+       btnSubtract.setOnClickListener(this);
+       btnMultiply.setOnClickListener(this);
+       btnDivide.setOnClickListener(this);
+   }
+
+   @Override
+   public void onClick(View v) {
+       // TODO Auto-generated method stub
+       float num1 = 0;
+       float num2 = 0;
+       float result = 0;
+
+       // check if the fields are empty
+       if(etNumber1.getText().toString().length()==0)
+       {
+           Toast.makeText(MainActivity.this,"Enter the number",Toast.LENGTH_SHORT).show();
+           etNumber1.requestFocus();
+           return;
+       }
+
+       if(etNumber2.getText().toString().length()==0)
+       {
+           Toast.makeText(MainActivity.this,"Enter the number",Toast.LENGTH_SHORT).show();
+           etNumber2.requestFocus();
+           return;
+       }
+
+       // read EditText and fill variables with numbers
+       num1 = Float.parseFloat(etNumber1.getText().toString());
+       num2 = Float.parseFloat(etNumber2.getText().toString());
+
+       // defines the button that has been clicked and performs the corresponding operation
+       // write operation into oper, we will use it later for output
+       switch (v.getId()) {
+           case R.id.bt1:
+               oper = "+";
+               result = num1 + num2;
+               break;
+           case R.id.bt2:
+               oper = "-";
+               result = num1 - num2;
+               break;
+           case R.id.bt3:
+               oper = "*";
+               result = num1 * num2;
+               break;
+           case R.id.bt4:
+               oper = "/";
+               result = num1 / num2;
+               break;
+           default:
+               break;
+       }
+
+     // form the output line
+       txt6.setText(num1 + " " + oper + " " + num2 + " = " + result);
+   }
+}
